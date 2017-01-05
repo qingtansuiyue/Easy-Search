@@ -13,7 +13,6 @@ if os.name == 'nt':
 else:
     volume = ['/']
 
-
 def created_time(file):
     time_list = os.stat(file)
     return time_list.st_ctime
