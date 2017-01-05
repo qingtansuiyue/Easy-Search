@@ -1,42 +1,38 @@
+# **---encoding=utf-8-----
 # __author__=Jason
-from time import time
 import os
-from os import popen
-from os import stat
-from os import walk
+from time import time
 
+with open('file_record.txt', 'r') as fl:
+    path_list = fl.readlines()
 
 updated_files = 0
 if os.name == 'nt':
-    volume = ''.join(popen('wmic VOLUME get DriveLetter').read().split('\n')).split()
+    volume = ''.join(os.popen('wmic VOLUME get DriveLetter').read().split('\n')).split()
     volume.pop(0)
 else:
     volume = ['/']
 
-try:
-    last_scan = stat(r'file_record.txt').st_mtime
-except IOError:
-    print('This is the first time to scan.')
-    last_scan = 0
-
 
 def created_time(file):
-    time_list = stat(file)
+    time_list = os.stat(file)
     return time_list.st_ctime
 
 
-f = open(r'file_record.txt', 'a')
+f = open(r'file_record.txt', 'a', encoding='utf-8')
 
 start = time()
 
 for i in volume:
-    List = walk(i+'/')
+    List = os.walk(i + '/')
     for directory, dir_list, file_list in List:
         for x in file_list:
             try:
-                file_path = directory.replace('\\','/')+'/'+x
-                if created_time(file_path) > last_scan:
-                    f.write(file_path+'\n')
+                file_path = directory.replace('\\', '/') + '/' + x
+                if file_path in path_list:
+                    continue
+                else:
+                    f.write(file_path + '\n')
                     print(file_path)
                     updated_files += 1
             except IOError:
