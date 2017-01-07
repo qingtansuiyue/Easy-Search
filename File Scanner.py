@@ -7,6 +7,8 @@ from time import time
 con = sqlite3.connect('file_list_new.sqlite')
 cursor = con.cursor()
 
+file_to_update = []
+
 
 def insert_file(file):
     cursor.execute('''INSERT INTO file ('path') VALUES (?)''', (file,))
@@ -37,11 +39,16 @@ for i in volume:
         for x in file_list:
             file_path = directory.replace('\\', '/') + '/' + x
             if file_exists(file_path):
+                updated_files += 1
+                print(updated_files)
                 continue
             else:
-                insert_file(file_path)
-                print(file_path)
+                file_to_update.append(file_path)
                 updated_files += 1
+                print(file_path)
+
+for x in file_to_update:
+    insert_file(x)
 con.commit()
 con.close()
 print('Time_used:', time() - start)
