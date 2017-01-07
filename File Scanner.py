@@ -1,14 +1,26 @@
 # coding=utf-8
 # __author__=Jason
 import os
+import sqlite3
 from time import time
 
-try:
-    with open('file_record.txt', 'r', encoding='utf-8') as fl:
-        path_list = fl.readlines()
-except IOError:
-    path_list = []
-    print('This is the first time to scan')
+con = sqlite3.connect('file_list_new.sqlite')
+cursor = con.cursor()
+
+
+def insert_file(file):
+    cursor.execute('''INSERT INTO file ('path') VALUES (?)''', (file,))
+
+
+def file_exists(file):
+    if_file = cursor.execute('''SELECT path FROM file WHERE path= (?) ''', (file,))
+    for x in if_file:
+        if x:
+            return 1
+            break
+        else:
+            return 0
+
 
 updated_files = 0
 if os.name == 'nt':
@@ -17,26 +29,20 @@ if os.name == 'nt':
 else:
     volume = ['/']
 
-f = open('file_record.txt', 'a', encoding='utf-8')
-
 start = time()
 
 for i in volume:
     List = os.walk(i + '/')
     for directory, dir_list, file_list in List:
         for x in file_list:
-            try:
-                file_path = directory.replace('\\', '/') + '/' + x
-                if file_path + '\n' in path_list:
-                    continue
-                else:
-                    f.write(file_path + '\n')
-                    print(file_path)
-                    updated_files += 1
-            except IOError:
+            file_path = directory.replace('\\', '/') + '/' + x
+            if file_exists(file_path):
                 continue
-
-f.close()
-
+            else:
+                insert_file(file_path)
+                print(file_path)
+                updated_files += 1
+con.commit()
+con.close()
 print('Time_used:', time() - start)
 print(updated_files, 'file records were updated')
