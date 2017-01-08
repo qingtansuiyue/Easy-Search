@@ -1,0 +1,6 @@
+1.Introduction
+This is a python tool for file scan and search, sqlite3 is needed to run this tool.
+
+2.Usage
+Run 'File Scanner.py' to scan all the files in your computer.
+Run 'Search Files.py' to find the file you want to search.

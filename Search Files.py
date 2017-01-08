@@ -3,7 +3,7 @@
 import os
 import sqlite3
 
-search_target = input('Please input the file name you want to search')
+search_target = input('Please input the file name you want to search:\n')
 
 con = sqlite3.connect('file_list_new.sqlite')
 cursor = con.cursor()
