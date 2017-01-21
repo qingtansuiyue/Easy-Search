@@ -1,5 +1,5 @@
-# coding=utf-8
-# __author__ = Jason Zhang
+# -*- coding: utf-8 -*-
+# __author__=Jason
 import sqlite3
 
 

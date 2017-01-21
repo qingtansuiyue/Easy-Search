@@ -1,7 +1,8 @@
 # coding = utf-8
+import os
+import time
 from tkinter import *
 
-from File_Scanner import scanner
 from Search_Files import file_exists
 
 root = Tk()
@@ -12,9 +13,9 @@ p = StringVar()
 
 def scan():
     Result_Field['text'] = 'Scan Result'
-    result = scanner()
+    os.system('Scan_Files.py')
     file_list.delete(0.0, END)
-    file_list.insert(1.0, result)
+    file_list.insert(1.0, 'The file list was updated at %s' % time.asctime(time.localtime(time.time())))
 
 
 def search():
