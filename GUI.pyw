@@ -13,7 +13,7 @@ p = StringVar()
 
 def scan():
     Result_Field['text'] = 'Scan Result'
-    os.system('Scan_Files.py')
+    os.system('python Scan_Files.py')
     file_list.delete(0.0, END)
     file_list.insert(1.0, 'The file list was updated at %s' % time.asctime(time.localtime(time.time())))
 
